@@ -1,0 +1,20 @@
+[
+  {
+    "configId": "20fd37d5-998a-4ed6-99cd-3104b19a5fbc",
+    "totalTickets": 23,
+    "ticketReleaseRate": 2,
+    "producerCount": 10,
+    "consumerCount": 8,
+    "customerRetrievalRate": 3,
+    "maxTicketCapacity": 20
+  },
+  {
+    "configId": "7898ec2c-aeaa-4123-85d3-160c6c909f14",
+    "totalTickets": 45,
+    "ticketReleaseRate": 3,
+    "producerCount": 10,
+    "consumerCount": 8,
+    "customerRetrievalRate": 2,
+    "maxTicketCapacity": 40
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "configId": "fbdb9708-125d-4fe5-b347-88bddddb9d79",
+    "totalTickets": 20,
+    "ticketReleaseRate": 2,
+    "producerCount": 10,
+    "consumerCount": 8,
+    "customerRetrievalRate": 3,
+    "maxTicketCapacity": 15
+  },
+  {
+    "configId": "c638115c-cbbd-4cc1-b115-62a1263af9a0",
+    "totalTickets": 45,
+    "ticketReleaseRate": 3,
+    "producerCount": 10,
+    "consumerCount": 8,
+    "customerRetrievalRate": 2,
+    "maxTicketCapacity": 30
+  },
+  {
+    "configId": "0c525349-8d87-44b6-98fe-c7c5be8de8f6",
+    "totalTickets": 70,
+    "ticketReleaseRate": 2,
+    "producerCount": 20,
+    "consumerCount": 15,
+    "customerRetrievalRate": 3,
+    "maxTicketCapacity": 65
+  }
+]

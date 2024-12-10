@@ -1,0 +1,11 @@
+[
+  {
+    "configId": "45612b61-8729-4818-a6f7-8c91e890c854",
+    "totalTickets": 45,
+    "ticketReleaseRate": 2,
+    "producerCount": 20,
+    "consumerCount": 15,
+    "customerRetrievalRate": 3,
+    "maxTicketCapacity": 40
+  }
+]
