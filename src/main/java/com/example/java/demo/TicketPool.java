@@ -191,8 +191,6 @@ public class TicketPool {
 
     }
 
-
-
     public BlockingQueue<Ticket> getBlockingQueue() {
         return blockingQueue;
     }
