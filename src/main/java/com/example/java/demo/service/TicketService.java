@@ -1,7 +1,7 @@
 package com.example.java.demo.service;
 
 import com.example.java.demo.Repostries.TicketRepo3;
-import com.example.java.demo.DTO.Ticket;
+import com.example.java.demo.model.Ticket;
 //import com.example.java.demo.Repostries.TicketRepo2;
 import org.springframework.stereotype.Service;
 

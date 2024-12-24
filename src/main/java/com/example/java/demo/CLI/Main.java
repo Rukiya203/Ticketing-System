@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-public class Main {
+public class Main{
 
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static Configuration configuration2;
@@ -24,10 +24,9 @@ public class Main {
         boolean configurationLoaded = false;
 
         System.out.println("========================================");
-        System.out.println("     🎟️ REAL-TIME EVENT TICKETING SYSTEM 🎟️");
+        System.out.println("      REAL-TIME EVENT TICKETING SYSTEM ");
         System.out.println("========================================\n");
 
-        // Prompt to load a previously saved configuration
         System.out.println("🔄 Do you want to load the previously saved configuration? (yes/no): ");
         String loadConfig = scanner.nextLine().trim().toLowerCase();
 
@@ -45,16 +44,16 @@ public class Main {
             System.out.println("\n📋 Let's create a new configuration:");
 
             int totalTickets = getValidInput("🔢 Enter total number of tickets to produce: ");
-            int ticketReleaseRate = getValidInput("⏱️ Enter ticket release rate (tickets per second): ");
-            int customerRetrievalRate = getValidInput("⏱️ Enter customer retrieval rate (tickets per second): ");
-            int maxTicketCapacity = getValidInput("🛑 Enter maximum ticket pool capacity: ");
-            int numProducers = getValidInput("👨‍💻 Enter the number of producers: ");
-            int numConsumers = getValidInput("👥 Enter the number of consumers: ");
+            int ticketReleaseRate = getValidInput(" Enter ticket release rate (tickets per second): ");
+            int customerRetrievalRate = getValidInput("Enter customer retrieval rate (tickets per second): ");
+            int maxTicketCapacity = getValidInput("Enter maximum ticket pool capacity: ");
+            int numProducers = getValidInput("Enter the number of producers: ");
+            int numConsumers = getValidInput("Enter the number of consumers: ");
 
-            // Create a new configuration
+
             configuration2 = new Configuration(totalTickets, ticketReleaseRate, customerRetrievalRate, maxTicketCapacity, numProducers, numConsumers);
 
-            System.out.print("\n💾 Do you want to save this configuration? (yes/no): ");
+            System.out.print("\nDo you want to save this configuration? (yes/no): ");
             String saveConfig = scanner.nextLine().trim().toLowerCase();
 
             if (saveConfig.equals("yes")) {
@@ -64,64 +63,6 @@ public class Main {
 
         Menu();
 
-//        System.out.println("\n🚀 Starting the ticket system management...\n");
-//        TicketPool2 ticketPool = new TicketPool2(configuration2);
-//
-//        while (true) {
-//            System.out.println("\n💻 Enter a command (start, stop, exit): ");
-//            String command = scanner.nextLine().trim().toLowerCase();
-//
-//            switch (command) {
-//                case "start":
-//                    if (running) {
-//                        System.out.println("⚠️ Simulation is already running!");
-//                    } else {
-//                        running = true;
-//                        System.out.println("\n🚀 Starting the simulation...");
-//
-//                        for (int i = 1; i <= configuration2.getProducerCount(); i++) {
-//                            Thread producer = new Thread(new Vendor(ticketPool, configuration2.getTicketReleaseRate()), "Producer-" + i);
-//                            producer.start();
-//                            threadList.add(producer);
-//                            System.out.println("✅ Producer-" + i + " started.");
-//                        }
-//
-//                        for (int i = 1; i <= configuration2.getConsumerCount(); i++) {
-//                            Thread consumer = new Thread(new Consumer(ticketPool, configuration2.getCustomerRetrievalRate()), "Consumer-" + i);
-//                            consumer.start();
-//                            threadList.add(consumer);
-//                            System.out.println("✅ Consumer-" + i + " started.");
-//                        }
-//                    }
-//                    break;
-//
-//                case "s":
-//                    if (!running) {
-//                        System.out.println("⚠️ Simulation is not currently running!");
-//                    } else {
-//                        running = false;
-//                        System.out.println("🛑 Stopping the simulation...");
-//                        for (Thread thread : threadList) {
-//                            thread.interrupt();
-//                        }
-//                        threadList.clear();
-//                        displayFinalStatus(ticketPool);
-//
-//
-//
-//
-//            }
-//                    break;
-//
-//                case "exit":
-//                    System.out.println("❌ Exiting the program...");
-//                    displayFinalStatus(ticketPool);
-//                    System.exit(0);
-//
-//                default:
-//                    System.out.println("⚠️ Invalid command. Please enter 'start', 'stop', or 'exit'.");
-//            }
-//        }
     }
 
     public static int getValidInput(String message) {
@@ -135,32 +76,32 @@ public class Main {
                 if (value > 0) {
                     return value;
                 } else {
-                    System.out.println("❌ Value must be greater than 0. Please try again.");
+                    System.out.println(" Value must be greater than 0. Please try again.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("❌ Invalid input. Please enter a valid number.");
+                System.out.println("Invalid input. Please enter a valid number.");
             }
         }
     }
 
     private static boolean readData() {
-        System.out.println("🔄 Attempting to read configuration from file...");
+        System.out.println(" Attempting to read configuration from file...");
         try (FileReader fileReader = new FileReader(CONFIG_FILE)) {
-            Configuration[] configurations = gson.fromJson(fileReader, Configuration[].class); // Read as array
+            Configuration[] configurations = gson.fromJson(fileReader, Configuration[].class);
             if (configurations != null) {
-                CONFIGURATION_QUEUE.addAll(Arrays.asList(configurations)); // Populate the queue
-                configuration2 = CONFIGURATION_QUEUE.peek(); // Use the first configuration as current
+                CONFIGURATION_QUEUE.addAll(Arrays.asList(configurations));
+                configuration2 = CONFIGURATION_QUEUE.peek();
                 return true;
             }
         } catch (IOException | JsonSyntaxException e) {
-            System.out.println("❌ Error reading configuration data: " + e.getMessage());
+            System.out.println("Error reading configuration data: " + e.getMessage());
         }
         return false;
     }
 
 
     private static void writeData(Configuration newConfig) {
-        System.out.println("💾 Saving configuration...");
+        System.out.println(" Saving configuration...");
 
 
         readData();
@@ -171,76 +112,79 @@ public class Main {
 
         try (FileWriter fileWriter = new FileWriter(CONFIG_FILE)) { // Overwrite the file
             gson.toJson(new ArrayList<>(CONFIGURATION_QUEUE), fileWriter); // Convert Queue to List
-            System.out.println("✅ Configuration saved successfully.");
+            System.out.println(" Configuration saved successfully.");
         } catch (IOException e) {
-            System.out.println("❌ Error saving configuration data: " + e.getMessage());
+            System.out.println(" Error saving configuration data: " + e.getMessage());
         }
     }
 
 
     private static void displayConfiguration(Configuration configuration) {
+        System.out.println("        CONFIGURATION DETAILS");
         System.out.println("----------------------------------------");
-        System.out.println("       🛠️ CONFIGURATION DETAILS");
-        System.out.println("----------------------------------------");
-        System.out.println("🎫 Total Tickets: " + configuration.getTotalTickets());
-        System.out.println("⏱️ Ticket Release Rate: " + configuration.getTicketReleaseRate() + " tickets/second");
-        System.out.println("⏱️ Customer Retrieval Rate: " + configuration.getCustomerRetrievalRate() + " tickets/second");
-        System.out.println("🛑 Maximum Ticket Pool Capacity: " + configuration.getMaxTicketCapacity());
-        System.out.println("👨‍💻 Number of Producers: " + configuration.getProducerCount());
-        System.out.println("👥 Number of Consumers: " + configuration.getConsumerCount());
+        System.out.println(" Total Tickets: " + configuration.getTotalTickets());
+        System.out.println(" Ticket Release Rate: " + configuration.getTicketReleaseRate() + " tickets/second");
+        System.out.println(" Customer Retrieval Rate: " + configuration.getCustomerRetrievalRate() + " tickets/second");
+        System.out.println(" Maximum Ticket Pool Capacity: " + configuration.getMaxTicketCapacity());
+        System.out.println("Number of Producers: " + configuration.getProducerCount());
+        System.out.println(" Number of Consumers: " + configuration.getConsumerCount());
         System.out.println("----------------------------------------");
     }
 
     private static void displayFinalStatus(TicketPool2 ticketPool) {
-        System.out.println("\n📊 SYSTEM STATUS REPORT:");
+        System.out.println("\nSYSTEM STATUS REPORT:");
         System.out.println("----------------------------------------");
-        System.out.println("🎫 Tickets Produced: " + ticketPool.getTicketsProduced());
-        System.out.println("🎫 Tickets Consumed: " + ticketPool.getTicketsConsumed());
-        System.out.println("🎫 Tickets Remaining in Pool: " + ticketPool.getRemainingTickets());
+        System.out.println(" Tickets Produced: " + ticketPool.getTicketsProduced());
+        System.out.println(" Tickets Consumed: " + ticketPool.getTicketsConsumed());
+        System.out.println(" Tickets Remaining in Pool: " + ticketPool.getRemainingTickets());
         System.out.println("----------------------------------------");
-        System.out.println("✅ Simulation Complete. Thank you for using the system!");
+        System.out.println("Simulation Complete. Thank you for using the system!");
     }
 
     public static void Menu(){
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("\n🚀 Starting the ticket system management...\n");
+        System.out.println("\n Starting the ticket system management...\n");
         TicketPool2 ticketPool = new TicketPool2(configuration2);
 
         while (true) {
-            System.out.println("\n💻 Enter a command (start, stop, exit): ");
+            System.out.println("\n Enter a command (start, stop, exit): ");
             String command = scanner.nextLine().trim().toLowerCase();
 
             switch (command) {
                 case "start":
                     if (running) {
-                        System.out.println("⚠️ Simulation is already running!");
+                        System.out.println(" Simulation is already running!");
                     } else {
                         running = true;
-                        System.out.println("\n🚀 Starting the simulation...");
+                        System.out.println("\n Starting the simulation...");
 
                         for (int i = 1; i <= configuration2.getProducerCount(); i++) {
                             Thread producer = new Thread(new Vendor(ticketPool, configuration2.getTicketReleaseRate()), "Producer-" + i);
                             producer.start();
                             threadList.add(producer);
-                            System.out.println("✅ Producer-" + i + " started.");
+                            System.out.println(" Producer-" + i + " started.");
                         }
 
                         for (int i = 1; i <= configuration2.getConsumerCount(); i++) {
                             Thread consumer = new Thread(new Consumer(ticketPool, configuration2.getCustomerRetrievalRate()), "Consumer-" + i);
                             consumer.start();
                             threadList.add(consumer);
-                            System.out.println("✅ Consumer-" + i + " started.");
+                            System.out.println(" Consumer-" + i + " started.");
                         }
+
+
+//
                     }
+
                     break;
 
                 case "s":
                     if (!running) {
-                        System.out.println("⚠️ Simulation is not currently running!");
+                        System.out.println(" Simulation is not currently running!");
                     } else {
                         running = false;
-                        System.out.println("🛑 Stopping the simulation...");
+                        System.out.println(" Stopping the simulation...");
                         for (Thread thread : threadList) {
                             thread.interrupt();
                         }
@@ -254,12 +198,12 @@ public class Main {
                     break;
 
                 case "exit":
-                    System.out.println("❌ Exiting the program...");
+                    System.out.println(" Exiting the program...");
                     displayFinalStatus(ticketPool);
                     System.exit(0);
 
                 default:
-                    System.out.println("⚠️ Invalid command. Please enter 'start', 'stop', or 'exit'.");
+                    System.out.println(" Invalid command. Please enter 'start', 'stop', or 'exit'.");
             }
         }
 

@@ -1,7 +1,6 @@
 package com.example.java.demo.api;
 
-import com.example.java.demo.CLI.TicketPool2;
-import com.example.java.demo.DTO.Ticket;
+import com.example.java.demo.model.Ticket;
 import com.example.java.demo.TicketPool;
 import com.example.java.demo.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +15,15 @@ import java.util.UUID;
 
 @RequestMapping("api/v1/ticket")
 @RestController
-//@CrossOrigin("*",allowCredentials = false)
 @CrossOrigin("*")
 
 public class TicketContoller {
 
     @Autowired
+    /**
+     * TicketPool is a thread-safe pool of tickets.
+     * It is used to store and retrieve tickets.
+     */
     private final TicketPool ticketPool;
     private TicketService ticketService;
 
@@ -29,6 +31,11 @@ public class TicketContoller {
 
 
 
+    /**
+     * Creates a new instance of TicketContoller.
+     * @param ticketPool The ticket pool that will be used to store and retrieve tickets.
+     * @param ticketService The service that will be used to save and delete tickets.
+     */
     public TicketContoller(TicketPool ticketPool,TicketService ticketService) {
         this.ticketPool = ticketPool;
         this.ticketService=ticketService;
@@ -39,11 +46,18 @@ public class TicketContoller {
     }
 
     @PostMapping
+    /**
+     * Adds a ticket to the pool.
+     * <p>
+     * This method is thread-safe and blocks until the pool has available capacity.
+     * It also blocks if the total number of tickets produced has reached the maximum.
+     *
+     * @param ticket the ticket to add
+     * @return a response with the message "Ticket added successfully" if the ticket was added, otherwise a response with the message "Error: unable to add ticket to pool" if the ticket was not added
+     */
     public synchronized ResponseEntity<Map<String, Object>> AddTickets(@RequestBody Ticket ticket) {
 
 
-
-//        ticketPool.addTickets(ticket);
         ticketPool.addTicket(ticket);
 
         Map<String, Object> response = new HashMap<>();
@@ -61,31 +75,15 @@ public class TicketContoller {
 
     }
 
-//    @GetMapping("/stats")
-//    public Map<String, Object> getTicketStats() {
-//        Map<String, Object> stats = new HashMap<>();
-//        stats.put("ticketsProduced", ticketpool2.getTicketsProduced());
-//        stats.put("ticketsConsumed", ticketpool2.getTicketsConsumed());
-//        stats.put("currentPoolSize", ticketPool.ticketList().size());
-//        return stats;
-//    }
-
-//    @GetMapping
-//    public synchronized Ticket getTicket() {
-//        System.out.println("GET request received");
-//        return ticketPool.removeTicket();
-//    }
-@GetMapping("/{ticket_id}")
+    @GetMapping("/{ticket_id}")
 public synchronized ResponseEntity<Map<String, Object>> getTicket(@PathVariable UUID ticket_id) {
     System.out.println("GET request received for ticket ID: " + ticket_id);
 
-    // Try to retrieve the ticket from the pool based on the ticket_id
     Ticket ticket = ticketPool.removeTicketById(ticket_id);
 
     Map<String, Object> response = new HashMap<>();
 
     if (ticket != null) {
-        // Ticket found, return it in the response
         response.put("message", "Ticket retrieved successfully");
         response.put("ticket_id", ticket.getTicketId());
         response.put("ticket_name", ticket.getTicketId());
@@ -100,24 +98,19 @@ public synchronized ResponseEntity<Map<String, Object>> getTicket(@PathVariable 
 }
 
 
-//    @GetMapping("/available")
-//    public synchronized ResponseEntity<List<Ticket>> listickets() {
-//
-//
-////        List<Ticket> availbleTicket = ticketPool.ticketList();
-//        List<Ticket> availbleTicket = ticketService.getAllTickets();
-//
-//
-//        return ResponseEntity.ok(availbleTicket);
-//
-//
-//    }
+    /**
+     * Returns a list of all tickets in the pool.
+     * <p>
+     * This method is thread-safe.
+     *
+     * @return a response with a list of all tickets in the pool
+     */
 
     @GetMapping("/available")
     public synchronized ResponseEntity<List<Ticket>> listickets() {
 
 
-//        List<Ticket> availbleTicket = ticketPool.ticketList();
+
         List<Ticket> availbleTicket = ticketPool.ticketList();
 
 

@@ -18,6 +18,17 @@ public class SimulationController {
     private SimulationService simulationService;
 
     @PostMapping("/start")
+    /**
+     * Starts the simulation with the provided parameters.
+     *
+     * @param totalTickets          the total number of tickets to produce
+     * @param ticketReleaseRate     the rate at which tickets are released (tickets per second)
+     * @param customerRetrievalRate the rate at which customers retrieve tickets (tickets per second)
+     * @param maxTicketCapacity     the maximum capacity of the ticket pool
+     * @param numProducers          the number of producer threads
+     * @param numConsumers          the number of consumer threads
+     * @return a response entity containing a message indicating the status of the operation
+     */
     public ResponseEntity<Map<String, Object>> startSimulation(
             @RequestParam int totalTickets,
             @RequestParam int ticketReleaseRate,
@@ -29,7 +40,7 @@ public class SimulationController {
         Map<String, Object> response = new HashMap<>();
 
 
-        // Simple validation for the incoming parameters
+
         if (totalTickets <= 0 || ticketReleaseRate <= 0 || customerRetrievalRate <= 0 || maxTicketCapacity <= 0 || numProducers <= 0 || numConsumers <= 0) {
             response.put("message", "Fill all inputs");
 
@@ -38,6 +49,8 @@ public class SimulationController {
 
         simulationService.startSimulation(totalTickets, ticketReleaseRate, customerRetrievalRate, maxTicketCapacity, numProducers, numConsumers);
         response.put("message", "All good");
+
+
 
         return ResponseEntity.ok(response);
 

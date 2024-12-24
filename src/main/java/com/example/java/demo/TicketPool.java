@@ -158,7 +158,7 @@
 package com.example.java.demo;
 
 import com.example.java.demo.model.Configuration;
-import com.example.java.demo.DTO.Ticket;
+import com.example.java.demo.model.Ticket;
 import com.example.java.demo.service.TicketService;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -184,10 +184,11 @@ public class TicketPool {
     private final TicketService ticketService;
     private  Configuration config;
 
-    public TicketPool(TicketService ticketService) {
+    public TicketPool(TicketService ticketService,Configuration config) {
         this.ticketService = ticketService;
-        this.blockingQueue = new ArrayBlockingQueue<>(20); // Default capacity
+        this.blockingQueue = new ArrayBlockingQueue<>(20);
         this.ticketMap = new ConcurrentHashMap<>();
+        this.config=config;
 
     }
 
@@ -208,7 +209,7 @@ public class TicketPool {
         updateQueueCapacity(config.getMaxTicketCapacity());
     }
 
-    private void updateQueueCapacity(int newCapacity) {
+    public void updateQueueCapacity(int newCapacity) {
         BlockingQueue<Ticket> newQueue = new ArrayBlockingQueue<>(newCapacity);
         newQueue.addAll(blockingQueue); // Transfer existing tickets to the new queue
         blockingQueue = newQueue;

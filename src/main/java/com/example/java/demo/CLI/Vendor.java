@@ -1,7 +1,6 @@
 package com.example.java.demo.CLI;
 
-import com.example.java.demo.DTO.Ticket;
-
+import com.example.java.demo.model.Ticket;
 import java.util.UUID;
 
 public class Vendor implements Runnable {
@@ -15,27 +14,20 @@ public class Vendor implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
-            // Generate a unique UUID as ticket ID
-            Ticket ticket = new Ticket(UUID.randomUUID(),null,null,null);
+        while (!Thread.currentThread().isInterrupted()) {
+            Ticket ticket = new Ticket(UUID.randomUUID(), "Casino ", "GrandBell", "Galadari");
             boolean added = ticketPool.addTicket(ticket);
 
             if (!added) {
-                if (Thread.currentThread().isInterrupted()) {
-                    System.out.println(Thread.currentThread().getName() + " was interrupted. Stopping production.");
-                } else {
-                    System.out.println(Thread.currentThread().getName() + " has produced all tickets.");
-                }
-                break; // Stop producing when all tickets are produced or interrupted
+                break;
             }
 
             try {
-                Thread.sleep(ticketReleaseRate * 1000); // Simulate delay in processing
+                Thread.sleep(ticketReleaseRate * 1000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                break; // Exit if interrupted
+                break;
             }
         }
     }
 }
-

@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Configuration {
 
     @Id
-    @Column(name = "config_id") // Primary key column
+    @Column(name = "config_id")
     private UUID configId;
 
     @Column(name = "total_tickets")
@@ -34,9 +34,7 @@ public class Configuration {
     @Column(name = "max_ticket_capacity")
     private int maxTicketCapacity;
 
-    // One-to-One relationship with Producer3
-    @OneToOne(mappedBy ="configuration", cascade = CascadeType.ALL)
-    private Producer3 producer;
+
 
     // Default constructor
     public Configuration() {
@@ -44,7 +42,16 @@ public class Configuration {
     }
 
 
-    
+    /**
+     * Class representing a configuration
+     *
+     * <p>
+     * This class represents a configuration which includes the total number of tickets,
+     * the release rate of tickets, the customer retrieval rate, the maximum ticket capacity,
+     * the producer count and the consumer count.
+     *
+     * @author Ankit Chaudhary
+     */
     public Configuration(@JsonProperty("total_tickets") int totalTickets,
                          @JsonProperty("ticket_release_rate") int ticketReleaseRate,
                          @JsonProperty("customer_retrieval_rate") int customerRetrievalRate,
@@ -119,13 +126,7 @@ public class Configuration {
         this.maxTicketCapacity = maxTicketCapacity;
     }
 
-    public Producer3 getProducer() {
-        return producer;
-    }
 
-    public void setProducer(Producer3 producer) {
-        this.producer = producer;
-    }
 
     @Override
     public String toString() {
@@ -137,7 +138,7 @@ public class Configuration {
                 ", consumerCount=" + consumerCount +
                 ", customerRetrievalRate=" + customerRetrievalRate +
                 ", maxTicketCapacity=" + maxTicketCapacity +
-                ", producer=" + (producer != null ? producer.getVendorId() : "null") +
+
                 '}';
     }
 }

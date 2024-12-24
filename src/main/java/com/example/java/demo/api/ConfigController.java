@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+
 
 @RequestMapping("api/v1/configuration")
 @RestController
@@ -18,15 +17,22 @@ public class ConfigController {
 
     private final ConfigurationService configurationService;
 
-    // Constructor Injection
     public ConfigController(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }
 
+
+/**
+ * Handles the HTTP POST request to add a new configuration.
+ * This method synchronizes the creation of a new configuration and
+ * persists it using the configuration service. It then returns a response
+ * with the configuration details and a success message.
+ *
+ */
+
     @PostMapping
     public synchronized ResponseEntity<Map<String, Object>> AddConfig(@RequestBody Configuration configuration) {
         System.out.println("Adding new configuration: " + configuration);
-        // Save the configuration to the database through the service
         configurationService.saveConfiguration(configuration);
 
 
@@ -39,35 +45,7 @@ public class ConfigController {
         response.put("max_ticket_capacity",configuration.getMaxTicketCapacity());
         response.put("producer_count",configuration.getProducerCount());
         response.put("consumer_count",configuration.getConsumerCount());
-
-
-
-
-
-//        response.put("Max ticket Capacity", configuration.getMaxTicketCapacity());
-//        response.put("Consumer Count", configuration.getConsumerCount());
-
         return ResponseEntity.ok(response);
     }
 
-//    @GetMapping("/{Config_id}")
-//    public synchronized ResponseEntity<Map<String, Object>> getTicket(@PathVariable UUID Config_id) {
-//        System.out.println("GET request received for Config ID: " + Config_id);
-//        Map<String, Object> response = new HashMap<>();
-//
-//        // Fetch the configuration from the database using the service
-//        Optional<Configuration> configuration = Optional.ofNullable(configurationService.getConfigurationById(Config_id));
-//
-//        if (configuration.isPresent()) {
-//            return ResponseEntity.ok(Map.of(
-//                    "Config_id", configuration.get().getConfigId(),
-//                    "Max ticket Capacity", configuration.get().getMaxTicketCapacity(),
-//                    "Consumer Count", configuration.get().getConsumerCount()
-//            ));
-//        }
-//
-//        // If not found, return an appropriate response
-//        response.put("message", "Configuration not found");
-//        return ResponseEntity.status(404).body(response);  // 404 Not Found
-//    }
 }

@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 public class ConfigurationService {
 
-    @Qualifier("firstConfigurationRepository")  // Rename as needed
+
 
     private final ConfigurationRepository configurationRepository;
 
